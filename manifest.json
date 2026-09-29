@@ -1,0 +1,18 @@
+{
+  "name": "Pollinations",
+  "id": "1526638471902846103",
+  "api": "1.0.0",
+  "editorType": [
+    "figma"
+  ],
+  "main": "dist/code.js",
+  "ui": "dist/ui.html",
+  "documentAccess": "dynamic-page",
+  "networkAccess": {
+    "allowedDomains": [
+      "https://gen.pollinations.ai",
+      "https://enter.pollinations.ai"
+    ],
+    "reasoning": "Generating images and text with Pollinations, and signing in with a device code, both require these two hosts."
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "pollinations-figma",
+  "version": "1.0.0",
+  "description": "Generate and edit images with Pollinations inside Figma, paying with your own Pollen.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc --noEmit && node build.mjs",
+    "watch": "node build.mjs --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "node build.mjs --tests && node build/tests.js",
+    "test:live": "node build.mjs --tests && node build/tests.js --live"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@figma/plugin-typings": "^1.100.2",
+    "@types/node": "^22.10.2",
+    "esbuild": "^0.24.2",
+    "typescript": "^5.7.2"
+  }
+}

@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Pollinations</title>
+		<style>
+			:root {
+				color-scheme: light dark;
+			}
+			* {
+				box-sizing: border-box;
+			}
+			body {
+				margin: 0;
+				padding: 12px;
+				font: 11px/1.5 Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+				color: var(--figma-color-text);
+				background: var(--figma-color-bg);
+			}
+			h1 {
+				display: flex;
+				align-items: baseline;
+				gap: 6px;
+				margin: 0 0 10px;
+				font-size: 13px;
+				font-weight: 600;
+			}
+			h1 span {
+				font-weight: 400;
+				opacity: 0.6;
+			}
+			label {
+				display: block;
+				margin: 0 0 4px;
+				font-weight: 500;
+				opacity: 0.8;
+			}
+			textarea,
+			input,
+			select,
+			button {
+				font: inherit;
+				color: inherit;
+			}
+			textarea,
+			input[type="text"],
+			input[type="number"],
+			input[type="password"],
+			select {
+				width: 100%;
+				padding: 6px 8px;
+				border: 1px solid var(--figma-color-border);
+				border-radius: 6px;
+				background: var(--figma-color-bg-secondary, transparent);
+			}
+			textarea {
+				min-height: 62px;
+				resize: vertical;
+			}
+			.row {
+				display: flex;
+				gap: 8px;
+				align-items: flex-end;
+				margin-bottom: 10px;
+			}
+			.row > * {
+				flex: 1;
+				min-width: 0;
+			}
+			.row.tight {
+				align-items: center;
+			}
+			.field {
+				margin-bottom: 10px;
+			}
+			button {
+				padding: 7px 10px;
+				border: 1px solid var(--figma-color-border);
+				border-radius: 6px;
+				background: var(--figma-color-bg-secondary, transparent);
+				cursor: pointer;
+			}
+			button:hover:not(:disabled) {
+				border-color: var(--figma-color-border-strong, var(--figma-color-border));
+			}
+			button:disabled {
+				opacity: 0.45;
+				cursor: not-allowed;
+			}
+			button.primary {
+				background: var(--figma-color-bg-brand);
+				border-color: var(--figma-color-bg-brand);
+				color: var(--figma-color-text-onbrand, #fff);
+				font-weight: 600;
+			}
+			button.link {
+				padding: 0;
+				border: none;
+				background: none;
+				color: var(--figma-color-text-brand);
+				text-decoration: underline;
+			}
+			.note {
+				margin: 0 0 10px;
+				opacity: 0.7;
+			}
+			.status {
+				min-height: 32px;
+				margin: 10px 0 0;
+				padding: 8px;
+				border-radius: 6px;
+				background: var(--figma-color-bg-secondary, rgba(127, 127, 127, 0.12));
+				overflow-wrap: anywhere;
+			}
+			.status.error {
+				color: var(--figma-color-text-danger, #b3261e);
+				background: var(--figma-color-bg-danger, rgba(179, 38, 30, 0.12));
+			}
+			.status.busy {
+				opacity: 0.85;
+			}
+			.spinner {
+				display: none;
+				margin-right: 6px;
+			}
+			.spinner.on {
+				display: inline;
+			}
+			details {
+				margin: 10px 0;
+				border-top: 1px solid var(--figma-color-border);
+				padding-top: 8px;
+			}
+			summary {
+				cursor: pointer;
+				font-weight: 500;
+				opacity: 0.8;
+			}
+			.checkline {
+				display: flex;
+				gap: 14px;
+				align-items: center;
+				margin: 6px 0 0;
+			}
+			.checkline label {
+				display: flex;
+				gap: 6px;
+				align-items: center;
+				margin: 0;
+				font-weight: 400;
+			}
+			.checkline input {
+				width: auto;
+			}
+			#device {
+				display: none;
+				margin: 10px 0 0;
+				padding: 10px;
+				border: 1px solid var(--figma-color-border);
+				border-radius: 6px;
+			}
+			#device-code {
+				display: inline-block;
+				margin: 4px 0 6px;
+				font: 600 18px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
+				letter-spacing: 0.16em;
+			}
+			.footnote {
+				margin-top: 12px;
+				opacity: 0.6;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Pollinations <span>images, on your own Pollen</span></h1>
+
+		<div class="field">
+			<label for="prompt">Prompt</label>
+			<textarea id="prompt" placeholder="a wooden watermill above a quiet river, morning light"></textarea>
+		</div>
+
+		<div class="row">
+			<div>
+				<label for="model">Image model</label>
+				<select id="model"></select>
+			</div>
+			<div style="flex: 0 0 auto">
+				<button id="refresh-models" title="Reload the live model list">Reload</button>
+			</div>
+		</div>
+		<p class="note" id="model-note">Loading the live model list...</p>
+
+		<div class="row">
+			<div>
+				<label for="preset">Size</label>
+				<select id="preset"></select>
+			</div>
+			<div>
+				<label for="width">W</label>
+				<input id="width" type="number" min="64" max="4096" step="8" />
+			</div>
+			<div>
+				<label for="height">H</label>
+				<input id="height" type="number" min="64" max="4096" step="8" />
+			</div>
+		</div>
+
+		<button id="generate" class="primary">Generate new layer</button>
+		<div class="row" style="margin-top: 8px">
+			<button id="fill">Fill selection</button>
+			<button id="edit">Edit selected image</button>
+		</div>
+
+		<details id="details">
+			<summary>More options</summary>
+			<div class="row" style="margin-top: 8px">
+				<div>
+					<label for="seed">Seed (-1 for random)</label>
+					<input id="seed" type="number" step="1" />
+				</div>
+				<div>
+					<label for="scale">Image scale in layer</label>
+					<select id="scale"></select>
+				</div>
+			</div>
+			<div class="checkline">
+				<label><input id="nologo" type="checkbox" /> No watermark</label>
+				<label><input id="safe" type="checkbox" /> Safe mode</label>
+			</div>
+			<div class="row" style="margin-top: 10px">
+				<div>
+					<label for="edit-model">Model for edits</label>
+					<select id="edit-model"></select>
+				</div>
+				<div>
+					<label for="edit-size">Edit output size</label>
+					<select id="edit-size"></select>
+				</div>
+			</div>
+		</details>
+
+		<details>
+			<summary>Sign in and keys</summary>
+			<p class="note" id="key-state">No API key yet.</p>
+			<p class="note" id="account"></p>
+			<button id="signin">Sign in with a code</button>
+			<div id="device">
+				<div>Open this page and enter the code:</div>
+				<a id="device-link" href="#" class="note"></a>
+				<div id="device-code"></div>
+				<button id="copy-code">Copy code</button>
+			</div>
+			<div class="field" style="margin-top: 10px">
+				<label for="api-key">API key (sk_...) or fine-grained key</label>
+				<input id="api-key" type="password" placeholder="leave empty to stay signed out" />
+			</div>
+			<div class="field">
+				<label for="app-key">App key for sign-in (pk_..., optional)</label>
+				<input id="app-key" type="text" placeholder="optional, see the README" />
+			</div>
+			<div class="row tight">
+				<button id="signout">Sign out</button>
+				<button id="key-page" class="link">Create a key in the browser</button>
+			</div>
+		</details>
+
+		<div class="row tight" style="margin-top: 10px">
+			<div>
+				<label>Selection</label>
+				<span class="note" id="selection">Nothing is selected, so the image will be a new layer.</span>
+			</div>
+			<div style="flex: 0 0 auto">
+				<button id="refresh-selection">Refresh</button>
+			</div>
+		</div>
+
+		<p class="status info" id="status"><span class="spinner">&#9679;</span>Ready.</p>
+		<p class="footnote">
+			The plugin talks to gen.pollinations.ai and enter.pollinations.ai only. Your key is stored with
+			Figma's clientStorage on this machine.
+		</p>
+
+		<!-- ui script -->
+	</body>
+</html>
