@@ -45,8 +45,8 @@ that reports what Pollinations answered.
 The plugin is not in the Figma Community directory yet — see *Publishing* below. Until then, load it locally with
 Figma's development import:
 
-1. Download this repository (or clone it) somewhere permanent — Figma reads the built files from disk, so moving
-   the folder later breaks the plugin.
+1. Download this repository somewhere permanent — the `1.0.0` release carries the same files as a zip, or clone
+   it. Figma reads the built files from disk, so moving the folder later breaks the plugin.
 2. In the **Figma desktop app**, open any design file and choose **Plugins → Development → Import plugin from
    manifest…**
 3. Select `manifest.json` in the repository root.
